@@ -52,6 +52,10 @@ const getNewsByStatus = async (status, page = 1, pageSize = 5) => {
     return await News.findOneAndDelete({ _id: id, id_account });
   };
   
+  const changeNewsStatus = async (id, status) => {
+    let result = await News.findByIdAndUpdate(id, { status });
+    return result;
+  };
   
 
 
@@ -60,6 +64,7 @@ const getNewsByStatus = async (status, page = 1, pageSize = 5) => {
     getNewsByStatus,
     getNewsById,
     insertNews,
-    deleteNewsByIdNewsAndAccout
+    deleteNewsByIdNewsAndAccout,
+    changeNewsStatus
 
   };
