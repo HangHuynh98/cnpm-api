@@ -7,6 +7,7 @@ const {
 } = require("../../utils/ResponseHelper");
 const config = require("../../config");
 const { getAccountById } = require("../../services/accountService");
+const {getUserInfoByID} = require('../../services/userInforService')
 const LockedUser = "you are blocked, please contact admin for more detail!";
 
 const auth = async (req, res) => {
@@ -21,8 +22,17 @@ const auth = async (req, res) => {
           return Unauthorized(res, "Invalid Token!");
         }
         const {status} = await getAccountById(decoded.id);
+        const user = await getUserInfoByID(decoded.id_account);
+
         if (!status) return Unauthorized(res, LockedUser);
-        Ok(res, "you logined");
+        
+       const resultUser = {
+         "username": decoded.username,
+         "email": decoded.email,
+         "address": user.address,
+         "phone": user.phone,
+       }
+       return res.status(201).json({msg:'oke',resultUser})
       });
     } else Forbidden(res, "Not found Token !");
   } catch (e) {
