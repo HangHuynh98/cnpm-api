@@ -5,8 +5,8 @@ const insertUserInfo = async userInfoData => {
   return await userInfo.save();
 };
 
-const getUserInfoByEmail = async email => {
-  return await UserInfo.findOne({ email });
+const getUserInfoByID = async id => {
+  return await UserInfo.findOne({ id_account: id });
 };
 const getUserInfoByUserName = async username => {
   return await UserInfo.findOne({ username });
@@ -32,6 +32,6 @@ module.exports = {
   getUserInfoById,
   getUserInfoByUserName,
   updateUserInfoByIdAccount,
-  getUserInfoByEmail,
+  getUserInfoByID,
   updateAvatar
 };

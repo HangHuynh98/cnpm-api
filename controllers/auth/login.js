@@ -34,7 +34,7 @@ const login = async (req, res) => {
 //Support function
 const createToken = (user, expireTime = DefNoRememberTime) => {
   return jwt.sign(
-    { username: user.username, id: user._id },
+    { username: user.username, id: user._id, email: user.email },
     config.SECRECT_WORD,
     {
       expiresIn: expireTime
@@ -51,9 +51,9 @@ const isMatchPassword = (user, password) => {
 };
 
 const responseUserSession = (res, user, remember) => {
-  const { username , _id:id} = user;
+  const { username , _id:id,email} = user;
   const expireTime = remember ? DefRememberTime : DefNoRememberTime;
-  res.json({ token: createToken(user, expireTime), username, id});
+  res.json({ token: createToken(user, expireTime), username, id,email});
 };
 
 module.exports = login;

@@ -42,10 +42,10 @@ const requiredAdmin = async (req, res, next) => {
         return Forbidden(res, "This action requires admin role!");
       }
     } catch (e) {
-      console.log("REQUIRED ADMIN ERROR", e);
+      console.log("REQUIRED ADMIN ERROR", e);  
       InternalServerError(res);
     }
   });
 };
 
-module.exports = { requiredLogin, requiredAdmin };
+module.exports = { requiredLogin,requiredAdmin };

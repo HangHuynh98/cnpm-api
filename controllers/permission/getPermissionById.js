@@ -2,7 +2,7 @@ const {getPermissionById} = require ("../../services/permissionService");
 const{
   InternalServerError,
   BadRequest
-} = require("../../untils/ResponseHelper");
+} = require("../../utils/ResponseHelper");
 const  getPById = async(req, res) => {
     try{
         const result = await getById(req.params.id);
@@ -14,5 +14,5 @@ const  getPById = async(req, res) => {
     }
 }
  
- module.exports= getPById;
+ module.exports= getPermissionById;
  
