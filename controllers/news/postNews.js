@@ -9,7 +9,6 @@ const {
 } = require("../../utils/ResponseHelper");
 
 const postNews = async (req, res) => {
-  console.log("dsdsd",req.body)
   try {
     if (isEmptyBody(req) || hasAnyFieldEmpty(req.body)) return BadRequest(res);
     let data = req.body;
