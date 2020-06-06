@@ -47,7 +47,15 @@ const getNewsByStatus = async (status, page = 1, pageSize = 5) => {
     const count = await News.countDocuments(query);
     return Math.ceil(count / pageSize);
   };
+
+  const deleteNewsByIdNewsAndAccout = async (id, id_account) => {
+    return await News.findOneAndDelete({ _id: id, id_account });
+  };
   
+  const changeNewsStatus = async (id, status) => {
+    let result = await News.findByIdAndUpdate(id, { status });
+    return result;
+  };
   
 
 
@@ -55,6 +63,8 @@ const getNewsByStatus = async (status, page = 1, pageSize = 5) => {
     
     getNewsByStatus,
     getNewsById,
-    insertNews
+    insertNews,
+    deleteNewsByIdNewsAndAccout,
+    changeNewsStatus
 
   };
