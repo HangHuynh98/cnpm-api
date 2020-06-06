@@ -45,11 +45,12 @@ const getPageAccount = async (query, page, pageSize) => {
   return { page, pageSize, totalPage, data };
 };
 
-const getAccountByStatus = async (status, page = 1, pageSize = 10) => {
+const getAccountByStatusUser = async (status, page = 1, pageSize = 10) => {
   let query;
   switch (status) {
     case ACCOUNT_STATUS.ACTIVE:
-      query = Account.find({ status: ACCOUNT_STATUS.ACTIVE });
+      query = Account.find({status: true})
+      query.find({role: ["user"]})
       break;
     case ACCOUNT_STATUS.BLOCKED:
       query = Account.find({ status: ACCOUNT_STATUS.BLOCKED });
@@ -59,6 +60,22 @@ const getAccountByStatus = async (status, page = 1, pageSize = 10) => {
   }
   return await getPageAccount(query, page, pageSize);
 };
+const getAccountByStatusAdmin = async (status, page = 1, pageSize = 10) => {
+  let query;
+  switch (status) {
+    case ACCOUNT_STATUS.ACTIVE:
+      query = Account.find({status: true})
+      query.find({role: ["admin"]})
+      break;
+    case ACCOUNT_STATUS.BLOCKED:
+      query = Account.find({ status: ACCOUNT_STATUS.BLOCKED });
+      break;
+    default:
+      query = Account.find();
+  }
+  return await getPageAccount(query, page, pageSize);
+};
+
 
 const changeRoleToAdmin = async (id, toAdmin) => {
   if (toAdmin) {
@@ -79,7 +96,8 @@ module.exports = {
   getUserRoleById,
   ManageAccountById,
   getAccountById,
-  getAccountByStatus,
+  getAccountByStatusUser,
+  getAccountByStatusAdmin,
   changePassword,
   changeRoleToAdmin,
   countTotalAccount
