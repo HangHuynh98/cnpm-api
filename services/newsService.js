@@ -57,6 +57,9 @@ const getNewsByStatus = async (status, page = 1, pageSize = 5) => {
     return result;
   };
   
+  const getNewsByAccountId = async id_account => {
+    return await News.find({ id_account });
+  };
 
 
   module.exports = {
@@ -65,6 +68,7 @@ const getNewsByStatus = async (status, page = 1, pageSize = 5) => {
     getNewsById,
     insertNews,
     deleteNewsByIdNewsAndAccout,
-    changeNewsStatus
+    changeNewsStatus,
+    getNewsByAccountId
 
   };
