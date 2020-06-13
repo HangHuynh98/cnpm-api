@@ -35,8 +35,9 @@ const requiredLogin = (req, res, next) => {
 const requiredAdmin = async (req, res, next) => {
   requiredLogin(req, res, async () => {
     try {
-      const { role } = await getUserRoleById(req.decoded.id);
-      if (role.includes("admin")) {
+      const { isAdmin } = await getUserRoleById(req.decoded.id);
+      //console.log(isAdmin);
+      if (isAdmin===true) {
         next();
       } else {
         return Forbidden(res, "This action requires admin role!");

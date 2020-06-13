@@ -6,7 +6,7 @@ const {
   Ok
 } = require("../../utils/ResponseHelper");
 const config = require("../../config");
-const { getAccountById } = require("../../services/accountService");
+const {getAccountById } = require("../../services/accountService");
 const {getUserInfoByID} = require('../../services/userInforService')
 const LockedUser = "you are blocked, please contact admin for more detail!";
 
@@ -31,6 +31,8 @@ const auth = async (req, res) => {
          "email": decoded.email,
          "address": user.address,
          "phone": user.phone,
+         "isAdmin":decoded.isAdmin,
+         "role":decoded.role
        }
        return res.status(201).json({msg:'oke',resultUser})
       });

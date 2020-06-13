@@ -3,7 +3,7 @@ const {} = require("../controllers/news");
 
 app.use("/test", require("../controllers/test"));
 
-//app.use("/userinfo", require("../controllers/userInfo"));
+app.use("/userinfo", require("../controllers/userInfor"));
 app.use("/admin/accounts", require("../controllers/account").adminRouter);
 app.use("/accounts", require("../controllers/account").router);
 app.use("/", require("../controllers/auth"));

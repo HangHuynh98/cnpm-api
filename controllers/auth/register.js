@@ -13,6 +13,7 @@ const { getHashString, getRandomString } = require("../../utils/HashHelper");
 const EXISTED_ACCOUNT = "This account existed";
 
 const register = async (req, res) => {
+ 
   const bodyData = getAccountFromBodyRequest(req);
   if (!bodyData) return BadRequest(res, "invalid data");
   try {
@@ -22,10 +23,10 @@ const register = async (req, res) => {
     if(account1)return BadRequest(res, EXISTED_ACCOUNT);
     const accountData = hashPasswordOfAccount(bodyData);
     const savingAccountResult = await insertAccount(accountData);
-    console.log(bodyData.displayName)  
     const userInfoData = {
       id_account: savingAccountResult._id,
-      displayName: bodyData.displayName || savingAccountResult.username
+      role: bodyData.role,
+      isAdmin: bodyData.isAdmin,
     };
     const savingUserInfoResult = await insertUserInfo(userInfoData);
     const result = getResponseObject(savingAccountResult, savingUserInfoResult);
@@ -39,8 +40,9 @@ const register = async (req, res) => {
 const getResponseObject = (account, userInfo) => {
   return {
     username: account.username,
-    displayName: userInfo.displayName,
     email:account.email,
+    isAdmin:account.isAdmin,
+    role:account.role,
     join_date: account.createdDay
   };
 };
@@ -51,6 +53,8 @@ const hashPasswordOfAccount = account => {
   const accountData = {
     email:account.email,
     username: account.username,
+    isAdmin:account.isAdmin,
+    role:account.role,
     hash_password: hashPassword,
     salt_password: saltPassword,
     status: true
@@ -60,7 +64,7 @@ const hashPasswordOfAccount = account => {
 
 const getAccountFromBodyRequest = req => {
   if (!req.body) return null;
-  let { email,username, password, displayName } = req.body;
+  let { email,username, password, isAdmin, role } = req.body;
   if (email && username && password) {
     email=email.trim();
     username = username.trim();
@@ -68,7 +72,7 @@ const getAccountFromBodyRequest = req => {
     if (email==""|| username == "" || password == "") {
       return null;
     }
-    return { email, username, password, displayName };
+    return { email, username, password, isAdmin, role};
   } else {
     return null;
   }
