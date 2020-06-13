@@ -22,7 +22,7 @@ const auth = async (req, res) => {
           return Unauthorized(res, "Invalid Token!");
         }
         const {status} = await getAccountById(decoded.id);
-        const user = await getUserInfoByID(decoded.id_account);
+        const user = await getUserInfoByID(decoded.id);
 
         if (!status) return Unauthorized(res, LockedUser);
         
