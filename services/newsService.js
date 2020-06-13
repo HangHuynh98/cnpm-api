@@ -2,7 +2,7 @@ const News = require("../models/news");
 const NEWS_STATUS = require("../utils/constant").NEWS_STATUS;
 
 
-const getNewsByStatus = async (status, page = 1, pageSize = 5) => {
+const getNewsByStatus = async (status, page = 1, pageSize = 5, search="") => {
     let query;
     switch (status) {
       case NEWS_STATUS.AVAILABLE:
@@ -11,13 +11,12 @@ const getNewsByStatus = async (status, page = 1, pageSize = 5) => {
       case NEWS_STATUS.UNAVAILABLE:
         query = News.find({ status: NEWS_STATUS.UNAVAILABLE });
         break;
-      case NEWS_STATUS.HIDE:
-        query = News.find({ status: NEWS_STATUS.HIDE });
-        break;
       default:
         query = News.find();
     }
-  
+
+    query = searchNews(query,search);
+    
     return await getPageNews(query, page, pageSize);
   };
 
@@ -51,13 +50,28 @@ const getNewsByStatus = async (status, page = 1, pageSize = 5) => {
   const deleteNewsByIdNewsAndAccout = async (id, id_account) => {
     return await News.findOneAndDelete({ _id: id, id_account });
   };
+
+  const deleteNewsById = async id => {
+    return await News.findByIdAndDelete(id);
+  };
   
   const changeNewsStatus = async (id, status) => {
     let result = await News.findByIdAndUpdate(id, { status });
     return result;
   };
   
+  const getNewsByAccountId = async id_account => {
+    return await News.find({ id_account });
+  };
 
+  const searchNews = (query, search ) => {
+    const regrex = `${search}`;
+    return query.where('title', new RegExp(regrex));
+  }
+
+  const editNews = async (id, id_account, news) => {
+    return await News.findOneAndUpdate({ _id: id, id_account }, news,{new:true});
+  };
 
   module.exports = {
     
@@ -65,6 +79,9 @@ const getNewsByStatus = async (status, page = 1, pageSize = 5) => {
     getNewsById,
     insertNews,
     deleteNewsByIdNewsAndAccout,
-    changeNewsStatus
+    changeNewsStatus,
+    getNewsByAccountId,
+    deleteNewsById,
+    editNews
 
   };

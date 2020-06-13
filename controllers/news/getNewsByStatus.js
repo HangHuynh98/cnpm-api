@@ -3,14 +3,17 @@ const {
   InternalServerError,
   BadRequest
 } = require("../../utils/ResponseHelper");
-const { NEWS_STATUS } = require("../../utils/constant");
 
 const get = async (req, res) => {
-  let { page, pageSize, search } = req.query;
+  let { page, pageSize ,status, search} = req.query;
   page = parseInt(page) || 1;
-  pageSize = parseInt(pageSize) || 5;
+  pageSize = parseInt(pageSize) || 20;
+  status = parseInt(status);
+  console.log(page, pageSize, search)
+
+  //if (page > totalPage) return BadRequest(res, "Wrong page number!");
   try {
-    const result = await getNewsByStatus(NEWS_STATUS.AVAILABLE, page, pageSize,search);
+    const result = await getNewsByStatus(status, page, pageSize, search);
     res.send(result);
   } catch (error) {
     console.log(error)
