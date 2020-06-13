@@ -6,11 +6,11 @@ const {
 const { NEWS_STATUS } = require("../../utils/constant");
 
 const get = async (req, res) => {
-  let { page, pageSize } = req.query;
+  let { page, pageSize, search } = req.query;
   page = parseInt(page) || 1;
   pageSize = parseInt(pageSize) || 5;
   try {
-    const result = await getNewsByStatus(NEWS_STATUS.AVAILABLE, page, pageSize);
+    const result = await getNewsByStatus(NEWS_STATUS.AVAILABLE, page, pageSize,search);
     res.send(result);
   } catch (error) {
     console.log(error)

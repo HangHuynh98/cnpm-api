@@ -14,6 +14,7 @@ const postNews = async (req, res) => {
     if (isEmptyBody(req) || hasAnyFieldEmpty(req.body)) return BadRequest(res);
     let data = req.body;
     data.id_account = req.decoded.id;
+    data.username = req.decoded.username;
 //    console.log(data.id_account);
 //    console.log(req.decoded.username);
 //    console.log(data)

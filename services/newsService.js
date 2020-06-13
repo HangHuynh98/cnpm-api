@@ -2,7 +2,7 @@ const News = require("../models/news");
 const NEWS_STATUS = require("../utils/constant").NEWS_STATUS;
 
 
-const getNewsByStatus = async (status, page = 1, pageSize = 5) => {
+const getNewsByStatus = async (status, page = 1, pageSize = 5, search="") => {
     let query;
     switch (status) {
       case NEWS_STATUS.AVAILABLE:
@@ -17,7 +17,9 @@ const getNewsByStatus = async (status, page = 1, pageSize = 5) => {
       default:
         query = News.find();
     }
-  
+
+    query = searchNews(query,search);
+    
     return await getPageNews(query, page, pageSize);
   };
 
@@ -61,6 +63,10 @@ const getNewsByStatus = async (status, page = 1, pageSize = 5) => {
     return await News.find({ id_account });
   };
 
+  const searchNews = (query, search ) => {
+    const regrex = `${search}`;
+    return query.where('title', new RegExp(regrex));
+  }
 
   module.exports = {
     
