@@ -11,9 +11,6 @@ const getNewsByStatus = async (status, page = 1, pageSize = 5, search="") => {
       case NEWS_STATUS.UNAVAILABLE:
         query = News.find({ status: NEWS_STATUS.UNAVAILABLE });
         break;
-      case NEWS_STATUS.HIDE:
-        query = News.find({ status: NEWS_STATUS.HIDE });
-        break;
       default:
         query = News.find();
     }

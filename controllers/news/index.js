@@ -12,5 +12,6 @@ router.put("/:id",requiredLogin, require("./editNews"));
 //admin
 adminRouter.patch("/:id", require("./allowToDisplay")); // chua co requiredAdmin
 adminRouter.delete("/:id", require("./deleteNewsByAdmin")); // chua co requiredAdmin
+adminRouter.get("/",require("./getNewsByStatus")); //chưa co requiredAdmin
 
 module.exports = {router,adminRouter};
