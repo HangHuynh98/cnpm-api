@@ -19,7 +19,7 @@ const getAccountById = async id => {
 };
 
 const getUserRoleById = async id => {
-  return await Account.findById(id).select("role");
+  return await Account.findById(id).select('isAdmin');
 };
 
 const changePassword = async (id, newPass) => {
@@ -45,11 +45,27 @@ const getPageAccount = async (query, page, pageSize) => {
   return { page, pageSize, totalPage, data };
 };
 
-const getAccountByStatus = async (status, page = 1, pageSize = 10) => {
+const getAccountByStatusUser = async (status, page = 1, pageSize = 10) => {
   let query;
   switch (status) {
     case ACCOUNT_STATUS.ACTIVE:
-      query = Account.find({ status: ACCOUNT_STATUS.ACTIVE });
+      query = Account.find({status: true})
+      query.find({isAdmin:false})
+      break;
+    case ACCOUNT_STATUS.BLOCKED:
+      query = Account.find({ status: ACCOUNT_STATUS.BLOCKED });
+      break;
+    default:
+      query = Account.find();
+  }
+  return await getPageAccount(query, page, pageSize);
+};
+const getAccountByStatusAdmin = async (status, page = 1, pageSize = 10) => {
+  let query;
+  switch (status) {
+    case ACCOUNT_STATUS.ACTIVE:
+      query = Account.find({status: true})
+      query.find({isAdmin:true})
       break;
     case ACCOUNT_STATUS.BLOCKED:
       query = Account.find({ status: ACCOUNT_STATUS.BLOCKED });
@@ -60,11 +76,16 @@ const getAccountByStatus = async (status, page = 1, pageSize = 10) => {
   return await getPageAccount(query, page, pageSize);
 };
 
+const changeRoleByIdAccount = async (id, AccountData) => {
+  return await Account.findOneAndUpdate({ _id: id }, AccountData, {
+    new: true
+  });
+};
 const changeRoleToAdmin = async (id, toAdmin) => {
   if (toAdmin) {
     return Account.findOneAndUpdate({ _id: id }, { $push: { role: "admin" } });
   } else {
-    return Account.findOneAndUpdate({ _id: id }, { $pull: { role: "admin" } });;
+    return Account.findOneAndUpdate({ _id: id }, { $pull: { role: "admin" } });
   }
 };
 
@@ -79,8 +100,10 @@ module.exports = {
   getUserRoleById,
   ManageAccountById,
   getAccountById,
-  getAccountByStatus,
+  getAccountByStatusUser,
+  getAccountByStatusAdmin,
   changePassword,
   changeRoleToAdmin,
+  changeRoleByIdAccount,
   countTotalAccount
 };

@@ -1,7 +1,7 @@
 const router = require("express").Router();
-//const {requiredLogin} = require("../../middlewares/auth");
+const {requiredAdmin} = require("../../middlewares/auth");
 
-router.get("/",require("./getPermissions"));
-router.get("/:id",require("./getPermissionById"));
+router.get("/",requiredAdmin,require("./getPermissions"));
+router.get("/:id",requiredAdmin,require("./getPermissionById"));
 
 module.exports={router};

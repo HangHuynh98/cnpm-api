@@ -16,9 +16,8 @@ const LockedUser = "you are blocked, please contact admin for more detail!";
 const login = async (req, res) => {
   let { email, password, remember,  } = req.body;
   if (!email || !password) return BadRequest(res);
- // username = username.trim().toLowerCase();
   try {
-    const account = await getAccountByEmail(email);
+    const   account = await getAccountByEmail(email);
     if (account && isMatchPassword(account, password)) {
       if(!account.status) return Unauthorized(res, LockedUser);
       responseUserSession(res, account, remember);
@@ -29,12 +28,12 @@ const login = async (req, res) => {
     console.log(err)
     InternalServerError(res);
   }
-};
+};  
 
 //Support function
 const createToken = (user, expireTime = DefNoRememberTime) => {
   return jwt.sign(
-    { username: user.username, id: user._id, email: user.email },
+    { username: user.username, id: user._id, email: user.email, isAdmin:user.isAdmin, role: user.role },
     config.SECRECT_WORD,
     {
       expiresIn: expireTime
@@ -51,9 +50,9 @@ const isMatchPassword = (user, password) => {
 };
 
 const responseUserSession = (res, user, remember) => {
-  const { username , _id:id,email} = user;
+  const { username , _id:id, email, isAdmin , role } = user;
   const expireTime = remember ? DefRememberTime : DefNoRememberTime;
-  res.json({ token: createToken(user, expireTime), username, id,email});
+  res.json({ token: createToken(user, expireTime), username, id, email, isAdmin ,role });
 };
 
 module.exports = login;

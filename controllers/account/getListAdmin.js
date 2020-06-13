@@ -1,4 +1,4 @@
-const {getAccountByStatusUser} = require("../../services/accountService");
+const {getAccountByStatusAdmin} = require("../../services/accountService");
 const {
   InternalServerError,
   BadRequest
@@ -9,7 +9,7 @@ const get = async (req, res) => {
   if (!page ) page = 1;
   pageSize = parseInt(pageSize);
   try {
-    const result = await getAccountByStatusUser(true, page, pageSize);
+    const result = await getAccountByStatusAdmin(true, page, pageSize);
     res.send(result);
   } catch (e) {
     console.log(e);
