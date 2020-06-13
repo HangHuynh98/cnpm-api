@@ -53,6 +53,10 @@ const getNewsByStatus = async (status, page = 1, pageSize = 5, search="") => {
   const deleteNewsByIdNewsAndAccout = async (id, id_account) => {
     return await News.findOneAndDelete({ _id: id, id_account });
   };
+
+  const deleteNewsById = async id => {
+    return await News.findByIdAndDelete(id);
+  };
   
   const changeNewsStatus = async (id, status) => {
     let result = await News.findByIdAndUpdate(id, { status });
@@ -68,6 +72,10 @@ const getNewsByStatus = async (status, page = 1, pageSize = 5, search="") => {
     return query.where('title', new RegExp(regrex));
   }
 
+  const editNews = async (id, id_account, news) => {
+    return await News.findOneAndUpdate({ _id: id, id_account }, news,{new:true});
+  };
+
   module.exports = {
     
     getNewsByStatus,
@@ -75,6 +83,8 @@ const getNewsByStatus = async (status, page = 1, pageSize = 5, search="") => {
     insertNews,
     deleteNewsByIdNewsAndAccout,
     changeNewsStatus,
-    getNewsByAccountId
+    getNewsByAccountId,
+    deleteNewsById,
+    editNews
 
   };
