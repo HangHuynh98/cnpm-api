@@ -1,15 +1,13 @@
-const {getAccountByStatusAdmin} = require("../../services/accountService");
+const {getAccountAdmins} = require("../../services/accountService");
 const {
   InternalServerError,
   BadRequest
 } = require("../../utils/ResponseHelper");
 
 const get = async (req, res) => {
-  let { page, pageSize, status } = req.query;
-  if (!page ) page = 1;
-  pageSize = parseInt(pageSize);
+  let { status } = req.query;
   try {
-    const result = await getAccountByStatusAdmin(true, page, pageSize);
+    const result = await getAccountAdmins(true);
     res.send(result);
   } catch (e) {
     console.log(e);
