@@ -5,7 +5,7 @@ const getPermissions = async () => {
   };
 
   const getPermissionById = async id => {
-    return await Permission.findOne({_id:id});
+    return await Permission.findOne({code:id});
   };
 module.exports ={
     getPermissionById,
