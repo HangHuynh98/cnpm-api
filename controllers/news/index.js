@@ -10,8 +10,8 @@ router.delete("/:id",requiredLogin, require("./deleteNews"));
 router.put("/:id",requiredLogin, require("./editNews"));
 
 //admin
-adminRouter.patch("/:id", require("./allowToDisplay")); // chua co requiredAdmin
-adminRouter.delete("/:id", require("./deleteNewsByAdmin")); // chua co requiredAdmin
-adminRouter.get("/",require("./getNewsByStatus")); //chưa co requiredAdmin
+adminRouter.patch("/:id",requiredAdmin ,require("./allowToDisplay")); 
+adminRouter.delete("/:id",requiredAdmin, require("./deleteNewsByAdmin")); 
+adminRouter.get("/",requiredAdmin,require("./getNewsByAdmin")); 
 
 module.exports = {router,adminRouter};
