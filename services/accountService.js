@@ -15,7 +15,7 @@ const getAccountByUserName = async username => {
 };
 
 const getAccountById = async id => {
-  return await Account.findById(id);
+  return await Account.findById(id,{"status":1,"isAdmin":1,"role":1,"email":1, "username":1, "createdDay":1});
 };
 
 const getUserRoleById = async id => {
@@ -30,50 +30,15 @@ const ManageAccountById = async (id, status) => {
   return await Account.findByIdAndUpdate(id, { status }, { new: true });
 };
 
-const getTotalPage = async (pageSize, query) => {
-  const count = await Account.countDocuments(query);
-  return Math.ceil(count / pageSize);
-};
 
-const getPageAccount = async (query, page, pageSize) => {
-  page = page > 0 ? page : 1;
-  const totalPage = await getTotalPage(pageSize, query);
-  const data = await query
-    .sort({ _id: -1 })
-    .skip((page - 1) * pageSize)
-    .limit(pageSize);
-  return { page, pageSize, totalPage, data };
-};
 
-const getAccountByStatusUser = async (status, page = 1, pageSize = 10) => {
-  let query;
-  switch (status) {
-    case ACCOUNT_STATUS.ACTIVE:
-      query = Account.find({status: true})
-      query.find({isAdmin:false})
-      break;
-    case ACCOUNT_STATUS.BLOCKED:
-      query = Account.find({ status: ACCOUNT_STATUS.BLOCKED });
-      break;
-    default:
-      query = Account.find();
-  }
-  return await getPageAccount(query, page, pageSize);
+const getAccountUsers = async () => {
+    arr=await Account.find({isAdmin:false},{"status":1,"isAdmin":1,"role":1,"email":1, "username":1, "createdDay":1}) ;
+    return arr
 };
-const getAccountByStatusAdmin = async (status, page = 1, pageSize = 10) => {
-  let query;
-  switch (status) {
-    case ACCOUNT_STATUS.ACTIVE:
-      query = Account.find({status: true})
-      query.find({isAdmin:true})
-      break;
-    case ACCOUNT_STATUS.BLOCKED:
-      query = Account.find({ status: ACCOUNT_STATUS.BLOCKED });
-      break;
-    default:
-      query = Account.find();
-  }
-  return await getPageAccount(query, page, pageSize);
+const getAccountAdmins = async () => {
+  arr=await Account.find({isAdmin:true},{"status":1,"isAdmin":1,"role":1,"email":1, "username":1, "createdDay":1}) ;
+    return arr
 };
 
 const changeRoleByIdAccount = async (id, AccountData) => {
@@ -81,17 +46,8 @@ const changeRoleByIdAccount = async (id, AccountData) => {
     new: true
   });
 };
-const changeRoleToAdmin = async (id, toAdmin) => {
-  if (toAdmin) {
-    return Account.findOneAndUpdate({ _id: id }, { $push: { role: "admin" } });
-  } else {
-    return Account.findOneAndUpdate({ _id: id }, { $pull: { role: "admin" } });
-  }
-};
 
-const countTotalAccount =async ()=>{
-  return await Account.countDocuments();
-}
+
 
 module.exports = {
   insertAccount,
@@ -100,10 +56,8 @@ module.exports = {
   getUserRoleById,
   ManageAccountById,
   getAccountById,
-  getAccountByStatusUser,
-  getAccountByStatusAdmin,
+  getAccountUsers,
+  getAccountAdmins,
   changePassword,
-  changeRoleToAdmin,
   changeRoleByIdAccount,
-  countTotalAccount
 };

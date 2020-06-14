@@ -1,16 +1,18 @@
-const {getAccountByStatusUser} = require("../../services/accountService");
+const _ = require('lodash');
+const {getAccountUsers} = require("../../services/accountService");
 const {
   InternalServerError,
   BadRequest
 } = require("../../utils/ResponseHelper");
 
 const get = async (req, res) => {
-  let { page, pageSize, status } = req.query;
-  if (!page ) page = 1;
-  pageSize = parseInt(pageSize);
+  let { status } = req.query;
+  const omit = (prop, { [prop]: _, ...rest }) => rest;
+
   try {
-    const result = await getAccountByStatusUser(true, page, pageSize);
-    res.send(result);
+    const result = await getAccountUsers();
+    res.send(result)
+   
   } catch (e) {
     console.log(e);
     InternalServerError(res);
