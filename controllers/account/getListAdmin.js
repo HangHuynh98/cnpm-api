@@ -1,14 +1,23 @@
 const {getAccountAdmins} = require("../../services/accountService");
+const {getUserInfoById}=require("../../services/userInforService");
 const {
   InternalServerError,
   BadRequest
 } = require("../../utils/ResponseHelper");
 
 const get = async (req, res) => {
-  let { status } = req.query;
   try {
-    const result = await getAccountAdmins(true);
-    res.send(result);
+    let arr = await getAccountAdmins()
+    for(let i = 0; i< arr.length; i++){
+      
+      let user = await getUserInfoById(arr[i]._id)
+      arr[i] = {...arr[i]._doc, user}
+      console.log(user)
+    }
+
+    // const result1= await getUserInfo();
+    res.send(arr);
+   
   } catch (e) {
     console.log(e);
     InternalServerError(res);
