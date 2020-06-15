@@ -1,17 +1,25 @@
 const _ = require('lodash');
 const {getAccountUsers} = require("../../services/accountService");
+const {getUserInfoById}=require("../../services/userInforService");
 const {
   InternalServerError,
   BadRequest
 } = require("../../utils/ResponseHelper");
 
 const get = async (req, res) => {
-  let { status } = req.query;
-  const omit = (prop, { [prop]: _, ...rest }) => rest;
+
 
   try {
-    const result = await getAccountUsers();
-    res.send(result)
+    let arr = await getAccountUsers()
+    for(let i = 0; i< arr.length; i++){
+      
+      let user = await getUserInfoById(arr[i]._id)
+      arr[i] = {...arr[i]._doc, user}
+      console.log(user)
+    }
+
+    // const result1= await getUserInfo();
+    res.send(arr);
    
   } catch (e) {
     console.log(e);

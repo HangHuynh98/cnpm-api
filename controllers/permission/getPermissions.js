@@ -7,7 +7,6 @@ const {
 const get = async (req, res) => {
     try {
         const result= await getPermissions();
-        console.log(result);
         res.send(result);
     }catch(error){
         console.log(error)

@@ -8,6 +8,7 @@ const  getPById = async(req, res) => {
 
       
         const result = await getPermissionById(req.params.id);
+        console.log(result);
         res.send(result);
    
     }catch (error){
