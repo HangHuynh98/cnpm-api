@@ -41,11 +41,16 @@ const getAccountAdmins = async () => {
     return arr
 };
 
-const changeRoleByIdAccount = async (id, AccountData) => {
-  return await Account.findOneAndUpdate({ _id: id }, AccountData, {
+const changeRoleByIdAccount = async (id, role) => {
+  return await Account.findOneAndUpdate({ _id: id }, role, {
     new: true
   });
 };
+// const blockAccountById = async (id, AccountData) => {
+//   return await Account.findOneAndUpdate({ _id: id }, AccountData, {
+//     new: true
+//   });
+// };
 
 
 
