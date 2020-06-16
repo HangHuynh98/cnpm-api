@@ -2,7 +2,7 @@ const {
   insertAccount,
   getAccountByEmail,
   getAccountByUserName,
-} = require("../../services/accountService");
+} = require("../../services/accountService"); 
 const { insertUserInfo } = require("../../services/userInforService");
 const {
   BadRequest,
@@ -18,7 +18,7 @@ const register = async (req, res) => {
   if (!bodyData) return BadRequest(res, "invalid data");
   try {
     const account = await getAccountByEmail(bodyData.email);
-    const account1=await getAccountByUserName(bodyData.username);
+    const account1=await getAccountByUserName(bodyData.name);
     if (account) return BadRequest(res, EXISTED_ACCOUNT);
     if(account1)return BadRequest(res, EXISTED_ACCOUNT);
     const accountData = hashPasswordOfAccount(bodyData);
@@ -39,7 +39,7 @@ const register = async (req, res) => {
 
 const getResponseObject = (account, userInfo) => {
   return {
-    username: account.username,
+    name: account.name,
     email:account.email,
     isAdmin:account.isAdmin,
     role:account.role,
@@ -52,7 +52,7 @@ const hashPasswordOfAccount = account => {
   const hashPassword = getHashString(account.password, saltPassword);
   const accountData = {
     email:account.email,
-    username: account.username,
+    name: account.name,
     isAdmin:account.isAdmin,
     role:account.role,
     hash_password: hashPassword,
@@ -64,15 +64,15 @@ const hashPasswordOfAccount = account => {
 
 const getAccountFromBodyRequest = req => {
   if (!req.body) return null;
-  let { email,username, password, isAdmin, role } = req.body;
-  if (email && username && password) {
+  let { email,name, password, isAdmin, role } = req.body;
+  if (email && name && password) {
     email=email.trim();
-    username = username.trim();
+    name = name.trim();
     password = password.trim();
-    if (email==""|| username == "" || password == "") {
+    if (email==""||name == "" || password == "") {
       return null;
     }
-    return { email, username, password, isAdmin, role};
+    return { email, name, password, isAdmin, role};
   } else {
     return null;
   }

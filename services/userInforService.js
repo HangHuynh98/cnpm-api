@@ -1,12 +1,12 @@
-const UserInfo = require("../models/userInfo");
+const UserInfo = require("../models/userInfo"); 
 
 const insertUserInfo = async userInfoData => {
   const userInfo = new UserInfo(userInfoData);
   return await userInfo.save();
 };
 
-const getUserInfoByUserName = async username => {
-  return await UserInfo.findOne({ username });
+const getUserInfoByUserName = async name => {
+  return await UserInfo.findOne({ name });
 };
 
 const updateAvatar = async (id, avatar) => {

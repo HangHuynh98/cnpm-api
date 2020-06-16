@@ -1,5 +1,5 @@
 const News = require("../models/news");
-const NEWS_STATUS = require("../utils/constant").NEWS_STATUS;
+const NEWS_STATUS = require("../utils/constant").NEWS_STATUS; 
 const { getAccountById } = require("./accountService");
 const account = require("../models/account");
 
@@ -30,7 +30,7 @@ const getNewsByAdmin = async () => {
       id: account._id,
       email: account.email,
       isAdmin: account.isAdmin,
-      username: account.username,
+      username: account.name,
       status: account.status,
       role: account.role,
     }}
