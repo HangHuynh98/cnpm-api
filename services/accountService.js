@@ -1,5 +1,5 @@
 const Account = require("../models/account");
-const { ACCOUNT_STATUS } = require("../utils/constant");
+const { ACCOUNT_STATUS } = require("../utils/constant"); 
 
 const insertAccount = async account => {
   const acc = new Account(account);
@@ -10,12 +10,12 @@ const insertAccount = async account => {
 const getAccountByEmail= async email => {
   return await Account.findOne({ email });
 };
-const getAccountByUserName = async username => {
-  return await Account.findOne({ username });
+const getAccountByUserName = async name => {
+  return await Account.findOne({ name });
 };
 
 const getAccountById = async id => {
-  return await Account.findById(id,{"status":1,"isAdmin":1,"role":1,"email":1, "username":1, "createdDay":1});
+  return await Account.findById(id,{"status":1,"isAdmin":1,"role":1,"email":1, "name":1, "createdDay":1});
 };
 
 const getUserRoleById = async id => {
@@ -33,11 +33,11 @@ const ManageAccountById = async (id, status) => {
 
 
 const getAccountUsers = async () => {
-    arr=await Account.find({isAdmin:false},{"status":1,"isAdmin":1,"role":1,"email":1, "username":1, "createdDay":1}) ;
+    arr=await Account.find({isAdmin:false},{"status":1,"isAdmin":1,"role":1,"email":1, "name":1, "createdDay":1}) ;
     return arr
 };
 const getAccountAdmins = async () => {
-  arr=await Account.find({isAdmin:true},{"status":1,"isAdmin":1,"role":1,"email":1, "username":1, "createdDay":1}) ;
+  arr=await Account.find({isAdmin:true},{"status":1,"isAdmin":1,"role":1,"email":1, "name":1, "createdDay":1}) ;
     return arr
 };
 
