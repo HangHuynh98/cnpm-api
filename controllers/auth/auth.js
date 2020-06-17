@@ -30,9 +30,12 @@ const auth = async (req, res) => {
          "name": decoded.name,
          "email": decoded.email,
          "address": user.address,
-         "phone": user.phone,
+         "phoneNumber": user.phoneNumber,
+         "gender":user.gender,
+         "birthday":user.birthday,
          "isAdmin":decoded.isAdmin,
-         "role":decoded.role
+         "role":decoded.role,
+         "createdDay":user.createdDay
        }
        return res.status(201).json({msg:'oke',resultUser})
       });

@@ -1,16 +1,13 @@
 const Schema = require("mongoose").Schema; 
 
 const accountSchema = new Schema({
-  name: {
-    type: String,
-    required: true,
-    unique: true
-    
-  },
   email: {
     type: String,
     required: true,
     unique: true
+  },
+  name: {
+    type: String
   },
   hash_password: {
     type: String,
