@@ -25,7 +25,7 @@ const register = async (req, res) => {
       id_account: savingAccountResult._id,
       role: bodyData.role,
       isAdmin: bodyData.isAdmin,
-    };
+    }; 
     const savingUserInfoResult = await insertUserInfo(userInfoData);
     const result = getResponseObject(savingAccountResult, savingUserInfoResult);
     res.status(201).json(result);
@@ -37,7 +37,7 @@ const register = async (req, res) => {
 
 const getResponseObject = (account, userInfo) => {
   return {
-    name: account.name,
+    name:userInfo.name,
     email:account.email,
     isAdmin:account.isAdmin,
     role:account.role,
@@ -45,12 +45,12 @@ const getResponseObject = (account, userInfo) => {
   };
 };
 
-const hashPasswordOfAccount = account => {
+const hashPasswordOfAccount = (account) => {
   const saltPassword = getRandomString();
   const hashPassword = getHashString(account.password, saltPassword);
   const accountData = {
     email:account.email,
-    name: account.name,
+    // name: userInfo.name,
     isAdmin:account.isAdmin,
     role:account.role,
     hash_password: hashPassword,
