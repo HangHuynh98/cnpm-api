@@ -1,7 +1,6 @@
 const {
   insertAccount,
   getAccountByEmail,
-  getAccountByUserName,
 } = require("../../services/accountService"); 
 const { insertUserInfo } = require("../../services/userInforService");
 const {
@@ -18,12 +17,11 @@ const register = async (req, res) => {
   if (!bodyData) return BadRequest(res, "invalid data");
   try {
     const account = await getAccountByEmail(bodyData.email);
-    const account1=await getAccountByUserName(bodyData.name);
     if (account) return BadRequest(res, EXISTED_ACCOUNT);
-    if(account1)return BadRequest(res, EXISTED_ACCOUNT);
     const accountData = hashPasswordOfAccount(bodyData);
     const savingAccountResult = await insertAccount(accountData);
     const userInfoData = {
+      name:bodyData.name,
       id_account: savingAccountResult._id,
       role: bodyData.role,
       isAdmin: bodyData.isAdmin,
@@ -65,14 +63,14 @@ const hashPasswordOfAccount = account => {
 const getAccountFromBodyRequest = req => {
   if (!req.body) return null;
   let { email,name, password, isAdmin, role } = req.body;
-  if (email && name && password) {
+  if (email && password) {
     email=email.trim();
     name = name.trim();
     password = password.trim();
-    if (email==""||name == "" || password == "") {
+    if (email==""|| name==""||password == "") {
       return null;
     }
-    return { email, name, password, isAdmin, role};
+    return { email, name,password, isAdmin, role};
   } else {
     return null;
   }
