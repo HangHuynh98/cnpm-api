@@ -4,10 +4,10 @@ const {
   InternalServerError,
   Unauthorized,
   Ok
-} = require("../../utils/ResponseHelper");
+} = require("../../utils/ResponseHelper"); 
 const config = require("../../config");
 const {getAccountById } = require("../../services/accountService");
-const {getUserInfoByID} = require('../../services/userInforService')
+const {getUserInfoById} = require('../../services/userInforService')
 const LockedUser = "you are blocked, please contact admin for more detail!";
 
 const auth = async (req, res) => {
@@ -22,17 +22,20 @@ const auth = async (req, res) => {
           return Unauthorized(res, "Invalid Token!");
         }
         const {status} = await getAccountById(decoded.id);
-        const user = await getUserInfoByID(decoded.id);
+        const user = await getUserInfoById(decoded.id);
 
         if (!status) return Unauthorized(res, LockedUser);
         
        const resultUser = {
-         "username": decoded.username,
+         "name": user.name,
          "email": decoded.email,
          "address": user.address,
-         "phone": user.phone,
+         "phoneNumber": user.phoneNumber,
+         "gender":user.gender,
+         "birthday":user.birthday,
          "isAdmin":decoded.isAdmin,
-         "role":decoded.role
+         "role":decoded.role,
+         "createdDay":user.createdDay
        }
        return res.status(201).json({msg:'oke',resultUser})
       });

@@ -1,10 +1,6 @@
-const Schema = require("mongoose").Schema;
+const Schema = require("mongoose").Schema; 
 
 const accountSchema = new Schema({
-  username: {
-    type: String,
-    required: true
-  },
   email: {
     type: String,
     required: true,

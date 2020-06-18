@@ -1,9 +1,8 @@
-const Schema = require("mongoose").Schema;
+const Schema = require("mongoose").Schema; 
 
 const userInfoSchema = new Schema({
   id_account: { type: Schema.Types.ObjectId, required: true },
-  email: { type: String},
-  username: String,
+  name: {type:String, require:true},
   birthday: Date,
   address: String,
   gender:Boolean,

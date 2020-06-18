@@ -5,7 +5,7 @@ const {
   BadRequest,
   InternalServerError,
   Unauthorized
-} = require("../../utils/ResponseHelper");
+} = require("../../utils/ResponseHelper"); 
 const { getAccountByEmail } = require("../../services/accountService");
 
 const DefNoRememberTime = config.DEF_EXP_SHORT;
@@ -33,7 +33,7 @@ const login = async (req, res) => {
 //Support function
 const createToken = (user, expireTime = DefNoRememberTime) => {
   return jwt.sign(
-    { username: user.username, id: user._id, email: user.email, isAdmin:user.isAdmin, role: user.role },
+    { name: user.name, id: user._id, email: user.email, isAdmin:user.isAdmin, role: user.role },
     config.SECRECT_WORD,
     {
       expiresIn: expireTime
@@ -50,9 +50,9 @@ const isMatchPassword = (user, password) => {
 };
 
 const responseUserSession = (res, user, remember) => {
-  const { username , _id:id, email, isAdmin , role } = user;
+  const { name , _id:id, email, isAdmin , role } = user;
   const expireTime = remember ? DefRememberTime : DefNoRememberTime;
-  res.json({ token: createToken(user, expireTime), username, id, email, isAdmin ,role });
+  res.json({ token: createToken(user, expireTime), name, id, email, isAdmin ,role });
 };
 
 module.exports = login;
