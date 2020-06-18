@@ -15,10 +15,10 @@ const getAvailableNews = async ( page, pageSize, city, district, ward, arrArea, 
     $and: arrQuery
   };
   const totalPage = Math.ceil((await News.find(query).count()) / pageSize);
-  const result = await News.find(query).sort({ _id: -1 })
+  const data = await News.find(query).sort({ _id: -1 })
   .limit(pageSize)
   .skip((page - 1) * pageSize)
-  return { page, pageSize, totalPage, result } 
+  return { page, pageSize, totalPage, data } 
 };
 
 
