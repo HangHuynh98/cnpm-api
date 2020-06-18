@@ -4,36 +4,39 @@ const { getAccountById } = require("./accountService");
 const account = require("../models/account");
 
 
-const getNewsByStatus = async (status, page = 1, pageSize = 5, search = "") => {
-  let query;
-  switch (status) {
-    case NEWS_STATUS.AVAILABLE:
-      query = News.find({ status: NEWS_STATUS.AVAILABLE });
-      break;
-    case NEWS_STATUS.UNAVAILABLE:
-      query = News.find({ status: NEWS_STATUS.UNAVAILABLE });
-      break;
-    default:
-      query = News.find();
-  }
-
-  query = searchNews(query, search);
-
-  return await getPageNews(query, page, pageSize);
+const getAvailableNews = async ( page, pageSize, city, district, ward, arrArea, arrPrice) => {
+  const arrQuery = [{ status: NEWS_STATUS.AVAILABLE }]
+  if (city) arrQuery.push({ address: { $regex: `${city}`, '$options': "i" } })
+  if (district) arrQuery.push({ address: { $regex: `${district}`, '$options': "i" } })
+  if (ward) arrQuery.push({ address: { $regex: `${ward}`, '$options': "i" } })
+  if (arrArea) arrQuery.push({ area: { $gt: parseInt(arrArea[0]), $lt: parseInt(arrArea[1]) } })
+  if (arrPrice) arrQuery.push({ price: { $gt: parseInt(arrPrice[0]), $lt: parseInt(arrPrice[1]) } })
+  let query = {
+    $and: arrQuery
+  };
+  const totalPage = Math.ceil((await News.find(query).count()) / pageSize);
+  const result = await News.find(query).sort({ _id: -1 })
+  .limit(pageSize)
+  .skip((page - 1) * pageSize)
+  return { page, pageSize, totalPage, result } 
 };
 
+
+
 const getNewsByAdmin = async () => {
-  arr = await News.find()
-  for(let i = 0; i< arr.length; i++){
+  arr = await News.find().sort({ _id: -1 })
+  for (let i = 0; i < arr.length; i++) {
     const account = await getAccountById(arr[i]._doc.id_account)
-    arr[i]= {...arr[i]._doc, user:{
-      id: account._id,
-      email: account.email,
-      isAdmin: account.isAdmin,
-      username: account.username,
-      status: account.status,
-      role: account.role,
-    }}
+    arr[i] = {
+      ...arr[i]._doc, user: {
+        id: account._id,
+        email: account.email,
+        isAdmin: account.isAdmin,
+        name: account.name,
+        status: account.status,
+        role: account.role,
+      }
+    }
   }
   return arr;
 };
@@ -47,22 +50,6 @@ const insertNews = async newsData => {
   return await news.save();
 };
 
-
-const getPageNews = async (query, page, pageSize) => {
-
-  page = page > 0 ? page : 1;
-  const totalPage = await getTotalPage(pageSize, query);
-  const data = await query
-    .sort({ _id: -1 })
-    .limit(pageSize)
-    .skip((page - 1) * pageSize);
-  return { page, pageSize, totalPage, data };
-};
-
-const getTotalPage = async (pageSize, query) => {
-  const count = await News.countDocuments(query);
-  return Math.ceil(count / pageSize);
-};
 
 const deleteNewsByIdNewsAndAccout = async (id, id_account) => {
   return await News.findOneAndDelete({ _id: id, id_account });
@@ -78,7 +65,7 @@ const changeNewsStatus = async (id, status) => {
 };
 
 const getNewsByAccountId = async id_account => {
-  return await News.find({ id_account });
+  return await News.find({ id_account }).sort({ _id: -1 });
 };
 
 const searchNews = (query, search) => {
@@ -90,9 +77,20 @@ const editNews = async (id, id_account, news) => {
   return await News.findOneAndUpdate({ _id: id, id_account }, news, { new: true });
 };
 
+
+
+
+
+const filterByDistrict = (query, district) => {
+  const regrex = `${district}`;
+  return query.where('address', new RegExp(regrex))
+}
+
+
+
 module.exports = {
 
-  getNewsByStatus,
+  getAvailableNews,
   getNewsById,
   insertNews,
   deleteNewsByIdNewsAndAccout,
