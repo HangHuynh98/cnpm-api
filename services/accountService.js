@@ -45,6 +45,11 @@ const changeRoleByIdAccount = async (id, role) => {
     new: true
   });
 };
+const updateAccountByIdAccount = async (id, name) => {
+  return await Account.findOneAndUpdate({ _id: id }, name, {
+    new: true
+  });
+};
 // const blockAccountById = async (id, AccountData) => {
 //   return await Account.findOneAndUpdate({ _id: id }, AccountData, {
 //     new: true
@@ -64,4 +69,5 @@ module.exports = {
   getAccountAdmins,
   changePassword,
   changeRoleByIdAccount,
+  updateAccountByIdAccount
 };

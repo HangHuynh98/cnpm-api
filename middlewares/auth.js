@@ -33,6 +33,7 @@ const requiredLogin = (req, res, next) => {
 };
 
 const requiredAdmin = async (req, res, next) => {
+  console.log('requiredAdmin')
   requiredLogin(req, res, async () => {
     try {
       const { isAdmin } = await getUserRoleById(req.decoded.id);
@@ -48,5 +49,23 @@ const requiredAdmin = async (req, res, next) => {
     }
   });
 };
-
-module.exports = { requiredLogin,requiredAdmin };
+const checkRole = async (req, res, next ) => {
+  const {maRole} = req;
+  const {role} = req.decoded;
+  let status;
+  // role.map(item =>{
+  //   maRole.map( iRole =>{
+  //     item === iRole? status =true: status= false});
+  // })
+  // if(status) next();
+  // else return res.status(405).json({msg: 'Method not Allow'})
+  role.map(item =>{
+    maRole.map( iRole =>{
+      item === iRole? status =true: status= false
+      if(status) next();
+    });
+  })
+  // if(!status) return res.status(405).json({msg: 'Method not Allow'})
+ 
+};
+module.exports = { requiredLogin, requiredAdmin, checkRole };

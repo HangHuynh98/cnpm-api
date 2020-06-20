@@ -27,7 +27,7 @@ const auth = async (req, res) => {
         if (!status) return Unauthorized(res, LockedUser);
         
        const resultUser = {
-         "name": user.name,
+         "name": decoded.name,
          "email": decoded.email,
          "address": user.address,
          "phoneNumber": user.phoneNumber,

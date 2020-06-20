@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const adminRouter = require("express").Router();
-const { requiredLogin ,requiredAdmin } = require("../../middlewares/auth");
+const { requiredLogin ,requiredAdmin,checkRole } = require("../../middlewares/auth");
+const {checkRoleNews } = require('../../middlewares/role')
 
 router.get("/", require("./getAvailableNews"));
 router.get("/getNewsById/:id", require("./getNewsById"));
@@ -10,8 +11,8 @@ router.delete("/:id",requiredLogin, require("./deleteNews"));
 router.put("/:id",requiredLogin, require("./editNews"));
 
 //admin
-adminRouter.patch("/:id",requiredAdmin ,require("./allowToDisplay")); 
-adminRouter.delete("/:id",requiredAdmin, require("./deleteNewsByAdmin")); 
-adminRouter.get("/",requiredAdmin,require("./getNewsByAdmin")); 
+adminRouter.patch("/:id",requiredAdmin ,checkRoleNews, checkRole,require("./allowToDisplay")); 
+adminRouter.delete("/:id",requiredAdmin,checkRoleNews, checkRole, require("./deleteNewsByAdmin")); 
+adminRouter.get("/",requiredAdmin, checkRoleNews, checkRole,require("./getNewsByAdmin")); 
 
 module.exports = {router,adminRouter};
