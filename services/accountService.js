@@ -17,7 +17,9 @@ const getAccountByUserName = async name => {
 const getAccountById = async id => {
   return await Account.findById(id,{"status":1,"isAdmin":1,"role":1,"email":1, "name":1, "createdDay":1});
 };
-
+const getAccountByID = async id => {
+  return await Account.findById(id);
+};
 const getUserRoleById = async id => {
   return await Account.findById(id).select('isAdmin');
 };
@@ -65,6 +67,7 @@ module.exports = {
   getUserRoleById,
   ManageAccountById,
   getAccountById,
+  getAccountByID,
   getAccountUsers,
   getAccountAdmins,
   changePassword,

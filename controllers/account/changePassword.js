@@ -1,6 +1,6 @@
 const {
   changePassword,
-  getAccountById
+  getAccountByID
 } = require("../../services/accountService");
 const { getHashString } = require("../../utils/HashHelper");
 const {
@@ -14,7 +14,7 @@ const change = async (req, res) => {
   const { id } = req.decoded;
   if(!oldpass || !newpass) return BadRequest(res, "invalid data");
   try {
-    const { hash_password , salt_password} = await getAccountById(id);
+    const { hash_password , salt_password} = await getAccountByID(id);
     if (hash_password !== getHashString(oldpass, salt_password))
       return BadRequest(res, "Old password is not correct");
     await changePassword(id, getHashString(newpass, salt_password));
