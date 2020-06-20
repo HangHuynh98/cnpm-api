@@ -11,8 +11,8 @@ router.delete("/:id",requiredLogin, require("./deleteNews"));
 router.put("/:id",requiredLogin, require("./editNews"));
 
 //admin
-adminRouter.patch("/:id",requiredAdmin ,checkRoleNews, checkRole,require("./allowToDisplay")); 
-adminRouter.delete("/:id",requiredAdmin,checkRoleNews, checkRole, require("./deleteNewsByAdmin")); 
-adminRouter.get("/",requiredAdmin, checkRoleNews, checkRole,require("./getNewsByAdmin")); 
+adminRouter.patch("/:id",requiredAdmin ,require("./allowToDisplay")); 
+adminRouter.delete("/:id",requiredAdmin, require("./deleteNewsByAdmin")); 
+adminRouter.get("/",requiredAdmin, require("./getNewsByAdmin")); 
 
 module.exports = {router,adminRouter};

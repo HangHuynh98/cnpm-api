@@ -4,12 +4,12 @@ const { requiredLogin ,requiredAdmin,checkRole } = require("../../middlewares/au
 const {checkRoleUser,checkRoleAdmin } = require('../../middlewares/role')
 
 
-adminRouter.patch("/changestatusaccountuser/:id", requiredAdmin,checkRoleUser, checkRole, require("./changeStatusAccount"));
-adminRouter.patch("/changestatusaccountadmin/:id", requiredAdmin,checkRoleAdmin, checkRole, require("./changeStatusAccount"));
-adminRouter.get("/", requiredAdmin,checkRoleUser, checkRole, require("./getListUser"));
-adminRouter.get("/getaccountuser/:id",requiredAdmin,checkRoleUser, checkRole,  require("./getAccountById"));
-adminRouter.get("/getaccountadmin/:id",requiredAdmin,checkRoleAdmin, checkRole,  require("./getAccountById"));
-adminRouter.get("/listadmin",requiredAdmin,checkRoleAdmin, checkRole,require("./getListAdmin"));
+adminRouter.patch("/changestatusaccountuser/:id", requiredAdmin, require("./changeStatusAccount"));
+adminRouter.patch("/changestatusaccountadmin/:id", requiredAdmin, require("./changeStatusAccount"));
+adminRouter.get("/", requiredAdmin, require("./getListUser"));
+adminRouter.get("/getaccountuser/:id",requiredAdmin, require("./getAccountById"));
+adminRouter.get("/getaccountadmin/:id",requiredAdmin,  require("./getAccountById"));
+adminRouter.get("/listadmin",requiredAdmin,require("./getListAdmin"));
 adminRouter.patch("/:id", requiredAdmin, require("./changeRole"));
 
 router.patch("/", requiredLogin, require("./changePassword"));
