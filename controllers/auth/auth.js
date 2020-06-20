@@ -4,7 +4,7 @@ const {
   InternalServerError,
   Unauthorized,
   Ok
-} = require("../../utils/ResponseHelper"); 
+} = require("../../utils/ResponseHelper");  
 const config = require("../../config");
 const {getAccountById } = require("../../services/accountService");
 const {getUserInfoById} = require('../../services/userInforService')
@@ -27,7 +27,7 @@ const auth = async (req, res) => {
         if (!status) return Unauthorized(res, LockedUser);
         
        const resultUser = {
-         "name": user.name,
+         "name": decoded.name,
          "email": decoded.email,
          "address": user.address,
          "phoneNumber": user.phoneNumber,

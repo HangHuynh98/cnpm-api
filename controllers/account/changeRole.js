@@ -2,7 +2,7 @@ const {changeRoleByIdAccount} = require("../../services/accountService");
 const {
     InternalServerError,
     NotFound
-  } = require("../../utils/ResponseHelper");
+  } = require("../../utils/ResponseHelper"); 
 
 const changed = async (req, res) => {
   const { id: idAccount } = req.params;
@@ -13,8 +13,20 @@ const changed = async (req, res) => {
     }
   }
   try {
-    const result = await changeRoleByIdAccount(idAccount, nAccInfo);
-    if (!result) return NotFound(res, idAccount + " is not found");
+    const account = await changeRoleByIdAccount(idAccount, nAccInfo);
+    console.log(account);
+    if (!account) return NotFound(res, idAccount + " is not found");
+    let result = {
+      status: account.status,
+      isAdmin: account.isAdmin,
+      role: [
+        ...account.role
+      ],
+      _id: account._id,
+      email: account.email,
+      name: account.name,
+      createdDay:account.createdDay,
+    }
     res.send(result);
   } catch (error) {
     console.log(error)
