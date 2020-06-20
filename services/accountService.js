@@ -31,7 +31,6 @@ const ManageAccountById = async (id, status) => {
 };
 
 
-
 const getAccountUsers = async () => {
     arr=await Account.find({isAdmin:false},{"status":1,"isAdmin":1,"role":1,"email":1, "name":1, "createdDay":1}) ;
     return arr

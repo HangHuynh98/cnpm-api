@@ -37,7 +37,7 @@ const register = async (req, res) => {
 
 const getResponseObject = (account, userInfo) => {
   return {
-    name:userInfo.name,
+    name:account.name,
     email:account.email,
     isAdmin:account.isAdmin,
     role:account.role,
@@ -50,7 +50,7 @@ const hashPasswordOfAccount = (account) => {
   const hashPassword = getHashString(account.password, saltPassword);
   const accountData = {
     email:account.email,
-    // name: userInfo.name,
+    name: account.name,
     isAdmin:account.isAdmin,
     role:account.role,
     hash_password: hashPassword,
@@ -62,7 +62,7 @@ const hashPasswordOfAccount = (account) => {
 
 const getAccountFromBodyRequest = req => {
   if (!req.body) return null;
-  let { email,name, password, isAdmin, role } = req.body;
+  let { email, name, password, isAdmin, role } = req.body;
   if (email && password) {
     email=email.trim();
     name = name.trim();

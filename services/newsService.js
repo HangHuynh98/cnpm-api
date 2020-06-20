@@ -32,7 +32,7 @@ const getNewsByAdmin = async () => {
         id: account._id,
         email: account.email,
         isAdmin: account.isAdmin,
-       // name: account.name,
+        name: account.name,
         status: account.status,
         role: account.role,
       }
