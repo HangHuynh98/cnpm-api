@@ -8,7 +8,7 @@ const {
 const editUserInfo = async (req, res) => {
   const { id: idAccount } = req.params;
   let nAccInfo = {};
-  let name={};
+  let name={}; 
   for (let key in req.body) {
     if (req.body[key] || req.body[key] === 0) {  
         nAccInfo[key] = req.body[key];

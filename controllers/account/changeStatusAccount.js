@@ -7,7 +7,7 @@ const {
 const block = async (req, res) => {
   const {status } = req.body;
   const { id: id } = req.params;
-  if (!id) return BadRequest(res, "Invalid params");
+  if (!id) return BadRequest(res, "Invalid params"); 
   try {
     const account = await ManageAccountById(id, status);
     let result = {

@@ -2,7 +2,7 @@ const {changeRoleByIdAccount} = require("../../services/accountService");
 const {
     InternalServerError,
     NotFound
-  } = require("../../utils/ResponseHelper");
+  } = require("../../utils/ResponseHelper"); 
 
 const changed = async (req, res) => {
   const { id: idAccount } = req.params;
