@@ -20,7 +20,7 @@ const login = async (req, res) => {
     const account = await getAccountByEmail(email);
     if (account && isMatchPassword(account, password)) {
       if(!account.status) return Unauthorized(res, LockedUser);
-      if(account.isAdmin===true) return BadRequest(res);
+      if(account.isAdmin===false) return BadRequest(res);
       responseUserSession(res, account, remember);
     } else {
       Unauthorized(res, WrongAccountMsg);
