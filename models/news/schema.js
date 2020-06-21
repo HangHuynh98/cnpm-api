@@ -4,7 +4,7 @@ const newsSchema = new Schema({
   id_account: { type: String ,required:true },
   title: { type: String ,required:true},
   description: String,
-  status: {type:Boolean, default: false}, 
+  status: {type:Boolean, default: true}, 
   area: Number,
   //location: { longtitude: Number, latitude: Number },
   address: String,

@@ -14,13 +14,21 @@ const getTotal = async ()=>{
 
   const countNewsByMonth = async ()=>{
     let arrData= await getYear()
-    console.log(arrData.length)
     for(let j=0;j<arrData.length;j++) {
       let arr=[]
       for (let i = 1; i < 13; i ++) {
         let dateG,dateL
         dateG=setTimes(1,i,arrData[j].year)
-        dateL=setTimes(1,i+1,arrData[j].year)
+        if(i==12){
+          dateL=setTimes(1,i+1,arrData[j].year+1)
+        } else {
+          dateL=setTimes(1,i+1,arrData[j].year)
+        }
+        console.log("------")
+        console.log(dateG)
+        console.log(dateL)
+        console.log("------")
+
         let query =  {
             createDay: {
                 $gte: dateG,
