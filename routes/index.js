@@ -11,6 +11,6 @@ app.use("/news", require("../controllers/news").router);
 app.use("/permissions", require("../controllers/permission").router);
 app.use("/admin/news", require("../controllers/news").adminRouter);
 app.use("/photos", require("../controllers/photos"));
-// app.use("/admin/statitic", require("../controllers/statitic"));
+app.use("/admin/statistic", require("../controllers/statistic").adminRouter);
 
 module.exports = app;

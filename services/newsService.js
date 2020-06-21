@@ -15,7 +15,7 @@ const getAvailableNews = async ( page, pageSize, city, district, ward, arrArea, 
     $and: arrQuery
   };
   const totalPage = Math.ceil((await News.find(query).count()) / pageSize);
-  const data = await News.find(query).sort({ _id: -1 })
+  const data = await News.find(query).sort({ createDay: -1 })
   .limit(pageSize)
   .skip((page - 1) * pageSize)
   return { page, pageSize, totalPage, data } 
@@ -24,7 +24,7 @@ const getAvailableNews = async ( page, pageSize, city, district, ward, arrArea, 
 
 
 const getNewsByAdmin = async () => {
-  arr = await News.find().sort({ _id: -1 })
+  arr = await News.find().sort({ createDay: -1 })
   for (let i = 0; i < arr.length; i++) {
     const account = await getAccountById(arr[i]._doc.id_account)
     arr[i] = {
