@@ -1,8 +1,5 @@
 const News = require("../models/news");
 const Account = require("../models/account");
-const { lastIndexOf } = require("lodash");
-
-
 
 const getTotal = async ()=>{
     totalNews=  await News.countDocuments();
@@ -24,10 +21,6 @@ const getTotal = async ()=>{
         } else {
           dateL=setTimes(1,i+1,arrData[j].year)
         }
-        console.log("------")
-        console.log(dateG)
-        console.log(dateL)
-        console.log("------")
 
         let query =  {
             createDay: {
