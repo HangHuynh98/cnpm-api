@@ -4,6 +4,7 @@ const {} = require("../controllers/news");
 
 app.use("/userinfo", require("../controllers/userInfor"));
 app.use("/address", require("../controllers/address").router);
+app.use("/comment", require("../controllers/comment").router);
 app.use("/admin/accounts", require("../controllers/account").adminRouter);
 app.use("/accounts", require("../controllers/account").router);
 app.use("/", require("../controllers/auth"));

@@ -5,7 +5,7 @@ const {
     NotFound,Ok
   } = require("../../utils/ResponseHelper");
 
-const edit = async (req, res) => {
+const del = async (req, res) => {
   const { id } = req.params;
   const { id: idAccount } = req.decoded;
   try {
@@ -18,4 +18,4 @@ const edit = async (req, res) => {
   }
 };
 
-module.exports = edit;
+module.exports = del;
