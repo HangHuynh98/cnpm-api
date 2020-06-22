@@ -1,3 +1,5 @@
+const jwt = require("jsonwebtoken");
+const config = require("../../config");
 const {
   insertAccount,
   getAccountByEmail,
@@ -11,21 +13,23 @@ const { getHashString, getRandomString } = require("../../utils/HashHelper");
 
 const EXISTED_ACCOUNT = "This account existed";
 
+
 const register = async (req, res) => {
- 
+  const {check, isAdmin, role} = req;
+  if(check && !isAdmin) return res.status(405).json({msg: 'The role is not authorized to create admin'})
   const bodyData = getAccountFromBodyRequest(req);
   if (!bodyData) return BadRequest(res, "invalid data");
   try {
     const account = await getAccountByEmail(bodyData.email);
     if (account) return BadRequest(res, EXISTED_ACCOUNT);
+    bodyData.isAdmin = isAdmin;
+    bodyData.role = role;
     const accountData = hashPasswordOfAccount(bodyData);
+    console.log(accountData)
     const savingAccountResult = await insertAccount(accountData);
     const userInfoData = {
-      name:bodyData.name,
       id_account: savingAccountResult._id,
-      role: bodyData.role,
-      isAdmin: bodyData.isAdmin,
-    }; 
+    };
     const savingUserInfoResult = await insertUserInfo(userInfoData);
     const result = getResponseObject(savingAccountResult, savingUserInfoResult);
     res.status(201).json(result);
@@ -60,9 +64,9 @@ const hashPasswordOfAccount = (account) => {
   return accountData;
 };
 
-const getAccountFromBodyRequest = req => {
+const getAccountFromBodyRequest = (req)=> {
   if (!req.body) return null;
-  let { email, name, password, isAdmin, role } = req.body;
+  let { email, name, password } = req.body;
   if (email && password) {
     email=email.trim();
     name = name.trim();
@@ -70,7 +74,7 @@ const getAccountFromBodyRequest = req => {
     if (email==""|| name==""||password == "") {
       return null;
     }
-    return { email, name,password, isAdmin, role};
+    return { email, name,password};
   } else {
     return null;
   }

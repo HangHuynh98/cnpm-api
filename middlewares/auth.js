@@ -52,7 +52,8 @@ const requiredAdmin = async (req, res, next) => {
 const checkRole = async (req, res, next ) => {
   const {maRole} = req;
   const {role} = req.decoded;
-  let status;
+  let status = false;
+  console.log(role, '___', maRole)
   // role.map(item =>{
   //   maRole.map( iRole =>{
   //     item === iRole? status =true: status= false});
@@ -60,12 +61,42 @@ const checkRole = async (req, res, next ) => {
   // if(status) next();
   // else return res.status(405).json({msg: 'Method not Allow'})
   role.map(item =>{
-    maRole.map( iRole =>{
-      item === iRole? status =true: status= false
-      if(status) next();
-    });
+    if(maRole.indexOf(item)!== -1){
+      console.log('done')
+      status = true;
+    }
   })
-  // if(!status) return res.status(405).json({msg: 'Method not Allow'})
+  if(status) next()
+  else return res.status(405).json({msg: 'Method not Allow'})
  
 };
-module.exports = { requiredLogin, requiredAdmin, checkRole };
+const checkAccountAdmin = async (req, res, next) =>{
+  const { maRole } = req;
+  let token = req.headers["x-access-token"] || req.headers["authorization"];
+  if (token && token.startsWith("JWT ")) {
+    token = token.split(" ")[1];
+  }
+  let currentRole = req.body.role;
+  req.isAdmin = false;
+  req.check = false;
+  req.role = [];
+  if (token) {
+    req.check = true;
+    jwt.verify(token, config.SECRECT_WORD, async (err, decoded) => {
+      if (err) {
+        return Unauthorized(res, "Invalid Token!");
+      }
+      req.decoded = decoded
+      const { role } = decoded;
+      role.map(irole =>{
+       if( maRole.indexOf(irole)!==-1) {
+        req.isAdmin = true;
+        req.role =currentRole;
+
+       }
+      })
+    })
+  }
+  next();
+}
+module.exports = { requiredLogin, requiredAdmin, checkRole, checkAccountAdmin };

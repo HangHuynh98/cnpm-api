@@ -7,8 +7,10 @@ const {
 const block = async (req, res) => {
   const {status } = req.body;
   const { id: id } = req.params;
+  const idDecoded = req.decoded.id; 
   if (!id) return BadRequest(res, "Invalid params"); 
   try {
+    if(id === idDecoded)  res.status(405).json({msg: 'Method not Allow'})
     const account = await ManageAccountById(id, status);
     let result = {
       status: account.status,
