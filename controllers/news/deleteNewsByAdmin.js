@@ -6,7 +6,7 @@ const {
     Ok
   } = require("../../utils/ResponseHelper");
 
-const edit = async (req, res) => {
+const del = async (req, res) => {
   const { id } = req.params;
   try {
     const result = await deleteNewsById(id);
@@ -18,4 +18,4 @@ const edit = async (req, res) => {
   }
 };
 
-module.exports = edit;
+module.exports = del;

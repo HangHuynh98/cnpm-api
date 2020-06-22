@@ -8,7 +8,7 @@ const {
 const edit = async (req, res) => {
   const { id } = req.params;
   const { id: idAccount } = req.decoded;
-  let nNews = {};
+  let nNews = {createDay:Date.now()};
   for (let key in req.body) {
     if (req.body[key] || req.body[key] === 0) {
       nNews[key] = req.body[key];
