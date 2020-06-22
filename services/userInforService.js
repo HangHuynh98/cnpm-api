@@ -9,10 +9,6 @@ const getUserInfoByUserName = async name => {
   return await UserInfo.findOne({ name });
 };
 
-const updateAvatar = async (id, avatar) => {
-  return await UserInfo.findOneAndUpdate({ id_account: id }, { avatar });
-};
-
 const getUserInfoById = async id => {
   return await UserInfo.findOne({ id_account: id });
 };
@@ -32,5 +28,5 @@ module.exports = {
   getUserInfo,
   getUserInfoByUserName,
   updateUserInfoByIdAccount,
-  updateAvatar
+
 };

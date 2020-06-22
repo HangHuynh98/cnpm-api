@@ -5,7 +5,10 @@ const {
   } = require("../../utils/ResponseHelper"); 
 
 const changed = async (req, res) => {
-  const { id: idAccount } = req.params;
+  console.log()
+  const { id: idAccount } = req.params; 
+  const idDecoded = req.decoded.id; 
+
   let nAccInfo = {};
   for (let key in req.body) {
     if (req.body[key] || req.body[key] === 0) {
@@ -13,8 +16,8 @@ const changed = async (req, res) => {
     }
   }
   try {
+   if(idAccount === idDecoded)  res.status(405).json({msg: 'Method not Allow'})
     const account = await changeRoleByIdAccount(idAccount, nAccInfo);
-    console.log(account);
     if (!account) return NotFound(res, idAccount + " is not found");
     let result = {
       status: account.status,
