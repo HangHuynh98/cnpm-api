@@ -1,8 +1,7 @@
 const News = require("../models/news");
 const NEWS_STATUS = require("../utils/constant").NEWS_STATUS; 
 const { getAccountById } = require("./accountService");
-const account = require("../models/account");
-
+const {getUserInfoById} = require("./userInforService")
 
 const getAvailableNews = async ( page, pageSize, city, district, ward, arrArea, arrPrice) => {
   const arrQuery = [{ status: NEWS_STATUS.AVAILABLE }]
@@ -18,6 +17,15 @@ const getAvailableNews = async ( page, pageSize, city, district, ward, arrArea, 
   const data = await News.find(query).sort({ createDay: -1 })
   .limit(pageSize)
   .skip((page - 1) * pageSize)
+  for (let i = 0; i < data.length; i++) {
+    const account = await getAccountById(data[i].id_account)
+    const userInfo = await getUserInfoById(data[i].id_account)
+    data[i] = {
+      ...data[i]._doc, user: {
+        ...account._doc, ...userInfo._doc
+      }
+    }
+  }
   return { page, pageSize, totalPage, data } 
 };
 
