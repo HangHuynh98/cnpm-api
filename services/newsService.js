@@ -73,13 +73,13 @@ const changeNewsStatus = async (id, status) => {
 };
 
 const getNewsByAccountId = async id_account => {
-  return await News.find({ id_account }).sort({ _id: -1 });
+  return await News.find({ id_account }).sort({  createDay: -1 });
 };
 
-const searchNews = (query, search) => {
-  const regrex = `${search}`;
-  return query.where('title', new RegExp(regrex));
-}
+const getNewsOfAccount = async id_account => {
+  return await News.find({ id_account,status:true }).sort({ createDay: -1 });
+};
+
 
 const editNews = async (id, id_account, news) => {
   return await News.findOneAndUpdate({ _id: id, id_account }, news, { new: true });
@@ -89,10 +89,7 @@ const editNews = async (id, id_account, news) => {
 
 
 
-const filterByDistrict = (query, district) => {
-  const regrex = `${district}`;
-  return query.where('address', new RegExp(regrex))
-}
+
 
 
 
@@ -106,6 +103,7 @@ module.exports = {
   getNewsByAccountId,
   deleteNewsById,
   editNews,
-  getNewsByAdmin
+  getNewsByAdmin,
+  getNewsOfAccount
 
 };
