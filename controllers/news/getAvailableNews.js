@@ -6,10 +6,12 @@ const {
 const { NEWS_STATUS } = require("../../utils/constant");
 
 const get = async (req, res) => {
-  let { page, pageSize, search } = req.query;
-  let { city, district, ward, area, price } = req.body;
+  let { page, pageSize,city, district, ward, area, price } = req.query;
   let arrArea= area? area.split(","):null;
   let arrPrice= price? price.split(','):null;
+  console.log(city,district,ward)
+  console.log(arrArea)
+  console.log(arrPrice)
 
   page = parseInt(page) || 1;
   pageSize = parseInt(pageSize) || 5;
