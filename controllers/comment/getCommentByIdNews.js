@@ -1,10 +1,25 @@
 const Comment = require('../../models/comment/comment')
+const {
+    InternalServerError,
+    BadRequest,
+    NotFound
+  } = require("../../utils/ResponseHelper");
+const { getNewsById } = require('../../services/newsService');
 
-const getComment = async (req, res) => {
+const get = async (req, res) => {
+    try {
+
     const id = req.params.idNews;
+    const check = await getNewsById(id)
+    if (check.status===false) return BadRequest(res, "The News unvailable")
 
     Comment.find({id_news: id}).sort({ createDay: -1 })
-    .then(result => res.status(201).json(result))
+    .then(result => res.status(200).json(result))
+
+} catch (error) {
+    if ((error.name = "CastError")) return BadRequest(res, "The News does not exist");
+    InternalServerError(res);
+  }
 };
 
-module.exports = getComment;
+module.exports = get;
