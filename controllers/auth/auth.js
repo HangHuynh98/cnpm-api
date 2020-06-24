@@ -32,6 +32,7 @@ const auth = async (req, res) => {
          "address": user.address,
          "phoneNumber": user.phoneNumber,
          "gender":user.gender,
+         "avatar":user.avatar,
          "birthday":user.birthday,
          "isAdmin":decoded.isAdmin,
          "role":decoded.role,
