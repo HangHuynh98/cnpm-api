@@ -19,7 +19,7 @@ const editUserInfo = async (req, res) => {
         if (err) {
           return Unauthorized(res, "Invalid Token!");
         }
-        const {id,exp} = req.decoded;
+        const {id} = req.decoded;
         let nAccInfo = {};
         let name={};
         for (let key in req.body) {
