@@ -99,4 +99,19 @@ const checkAccountAdmin = async (req, res, next) =>{
   }
   next();
 }
-module.exports = { requiredLogin, requiredAdmin, checkRole, checkAccountAdmin };
+ const checkUser=async (req, res, next) =>{
+     const {isAdmin}= await getAccountById(req.params.id);
+        if(isAdmin)
+           return res.status(405).json({msg: 'The account not a User'})
+        next();
+    }
+const checkAdmin=async (req, res, next) =>{
+   const {isAdmin}= await getAccountById(req.params.id);
+       if(!isAdmin)
+         return res.status(405).json({msg: 'The account not a Admin'})
+        next();
+     }      
+     
+     
+
+module.exports = { requiredLogin, requiredAdmin, checkRole, checkAccountAdmin,checkUser,checkAdmin };

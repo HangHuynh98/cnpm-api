@@ -12,6 +12,7 @@ const block = async (req, res) => {
   try {
     if(id === idDecoded)  res.status(405).json({msg: 'Method not Allow'})
     const account = await ManageAccountById(id, status);
+    if(!account) return NotFound(res, id + " is not found");
     let result = {
       status: account.status,
       isAdmin: account.isAdmin,
