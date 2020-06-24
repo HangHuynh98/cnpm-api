@@ -5,7 +5,6 @@ const userInfoSchema = new Schema({
   birthday: Date,
   address: String,
   gender:Boolean,
-  avatar:String,
   phoneNumber:String,
   createdDay: { type: Date, default: Date.now }
 });

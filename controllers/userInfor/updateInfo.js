@@ -33,7 +33,7 @@ const editUserInfo = async (req, res) => {
           const userInfo = await updateUserInfoByIdAccount(id, nAccInfo);
           const account= await updateAccountByIdAccount(id, name);
           if (!userInfo) return NotFound(res, id + " is not found");
-          const createToken = (account, expireTime=exp) => {
+          const createToken = (account, expireTime=DefNoRememberTime) => {
             return jwt.sign(
               { name: account.name, id: account._id, email: account.email, isAdmin:account.isAdmin, role: account.role },
               config.SECRECT_WORD,
@@ -43,7 +43,7 @@ const editUserInfo = async (req, res) => {
             );
           };    
           res.send({userInfo: {
-            token: createToken(account,expireTime =exp),
+            token: createToken(account,expireTime =DefNoRememberTime),
             ...userInfo._doc,
             name: account.name
           }});

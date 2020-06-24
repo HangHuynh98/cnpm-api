@@ -1,8 +1,7 @@
 const News = require("../models/news");
 const NEWS_STATUS = require("../utils/constant").NEWS_STATUS; 
 const { getAccountById } = require("./accountService");
-const account = require("../models/account");
-
+const {getUserInfoById} = require("./userInforService")
 
 const getAvailableNews = async ( page, pageSize, city, district, ward, arrArea, arrPrice) => {
   const arrQuery = [{ status: NEWS_STATUS.AVAILABLE }]
@@ -15,16 +14,25 @@ const getAvailableNews = async ( page, pageSize, city, district, ward, arrArea, 
     $and: arrQuery
   };
   const totalPage = Math.ceil((await News.find(query).count()) / pageSize);
-  const data = await News.find(query).sort({ _id: -1 })
+  const data = await News.find(query).sort({ createDay: -1 })
   .limit(pageSize)
   .skip((page - 1) * pageSize)
+  for (let i = 0; i < data.length; i++) {
+    const account = await getAccountById(data[i].id_account)
+    const userInfo = await getUserInfoById(data[i].id_account)
+    data[i] = {
+      ...data[i]._doc, user: {
+        ...account._doc, ...userInfo._doc
+      }
+    }
+  }
   return { page, pageSize, totalPage, data } 
 };
 
 
 
 const getNewsByAdmin = async () => {
-  arr = await News.find().sort({ _id: -1 })
+  arr = await News.find().sort({ createDay: -1 })
   for (let i = 0; i < arr.length; i++) {
     const account = await getAccountById(arr[i]._doc.id_account)
     arr[i] = {
@@ -65,13 +73,13 @@ const changeNewsStatus = async (id, status) => {
 };
 
 const getNewsByAccountId = async id_account => {
-  return await News.find({ id_account }).sort({ _id: -1 });
+  return await News.find({ id_account }).sort({  createDay: -1 });
 };
 
-const searchNews = (query, search) => {
-  const regrex = `${search}`;
-  return query.where('title', new RegExp(regrex));
-}
+const getNewsOfAccount = async id_account => {
+  return await News.find({ id_account,status:true }).sort({ createDay: -1 });
+};
+
 
 const editNews = async (id, id_account, news) => {
   return await News.findOneAndUpdate({ _id: id, id_account }, news, { new: true });
@@ -81,10 +89,7 @@ const editNews = async (id, id_account, news) => {
 
 
 
-const filterByDistrict = (query, district) => {
-  const regrex = `${district}`;
-  return query.where('address', new RegExp(regrex))
-}
+
 
 
 
@@ -98,6 +103,7 @@ module.exports = {
   getNewsByAccountId,
   deleteNewsById,
   editNews,
-  getNewsByAdmin
+  getNewsByAdmin,
+  getNewsOfAccount
 
 };

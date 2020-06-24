@@ -6,3 +6,4 @@ const permissionShema = new Schema({
     name_per:{type:String},
     description:{type:String}
 });
+module.exports = permissionShema;
