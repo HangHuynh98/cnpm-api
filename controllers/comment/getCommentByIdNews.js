@@ -1,8 +1,8 @@
 const Comment = require('../../models/comment/comment')
 const {
     InternalServerError,
-    BadRequest,
-    NotFound
+    BadRequest
+
   } = require("../../utils/ResponseHelper");
 const { getNewsById } = require('../../services/newsService');
 
@@ -11,8 +11,6 @@ const get = async (req, res) => {
 
     const id = req.params.idNews;
     const check = await getNewsById(id)
-    if (check.status===false) return BadRequest(res, "The News unvailable")
-
     Comment.find({id_news: id}).sort({ createDay: -1 })
     .then(result => res.status(200).json(result))
 

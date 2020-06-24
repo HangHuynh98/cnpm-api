@@ -1,0 +1,20 @@
+const Comment = require('../../models/comment/comment')
+const {
+    InternalServerError,
+    NotFound,
+    Ok
+  } = require("../../utils/ResponseHelper");
+
+const del = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await Comment.findByIdAndDelete(id);
+    if(!result) return NotFound(res,"Id is not found");
+    Ok(res, "Deleted");
+  } catch (error) {
+    console.log(error)
+    InternalServerError(res);
+  }
+};
+
+module.exports = del;
