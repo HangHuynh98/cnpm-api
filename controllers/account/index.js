@@ -11,5 +11,6 @@ adminRouter.get("/listAdmins",requiredAdmin,checkRoleAdmin, checkRole,require(".
 adminRouter.patch("/changeRole/:id", requiredAdmin,checkRoleAdmin, checkRole, require("./changeRole"));
 
 router.patch("/changePassword", requiredLogin, require("./changePassword"));
+router.get("/getAccount/:id",requiredLogin, require("./getAccountById"));
 
 module.exports = { adminRouter, router };
