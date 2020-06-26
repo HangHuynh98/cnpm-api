@@ -1,21 +1,24 @@
 const Comment = require("../../models/comment/comment")
 const jwt = require("jsonwebtoken");
 const config = require("../../config");
+const { getUserInfoById } = require('../../services/userInforService');
 const {
     isEmptyBody,
     hasAnyFieldEmpty
   } = require("../../utils/validatorRequest");
 const {
     BadRequest,
-    InternalServerError
+    InternalServerError,
+    Unauthorized
   } = require("../../utils/ResponseHelper");
 const { postComment } = require('../../services/commentService');
+
 
 const post = async (req, res) => {
     try {
         if (isEmptyBody(req) || hasAnyFieldEmpty(req.body)) return BadRequest(res);
         let data= req.body
-        let id_news=req.params.idNews
+        const id_news=req.params.idNews
         data.id_news=id_news
         let token = req.headers["x-access-token"] || req.headers["authorization"];
         if (token && token.startsWith("JWT ")) {
@@ -29,9 +32,17 @@ const post = async (req, res) => {
                 data.id_account=decoded.id
                 data.nameWriter=decoded.name
                 
-      });
-    }
-        const result = await postComment(data);
+            });
+        }
+        let result = await postComment(data);
+        if (token) {
+            const userInfo = await getUserInfoById(result.id_account)
+            if(userInfo.avatar){
+                result = {
+                ...result._doc, avatar : userInfo.avatar
+                }
+        }
+        }
         res.status(201).send(result);
         
     } catch (error) {

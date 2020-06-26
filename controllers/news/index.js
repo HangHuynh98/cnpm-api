@@ -5,6 +5,7 @@ const {checkRoleNews } = require('../../middlewares/role')
 
 router.get("/", require("./getAvailableNews"));
 router.get("/getNewsById/:id", require("./getNewsById"));
+router.get("/checkNewsStatus/:id", require("./checkNewsStatus"));
 router.get("/getNewsByAccountId", requiredLogin, require("./getNewsByAccountId"));
 router.get("/getNewsOfAccount/:id", require("./getNewsOfAccount"));
 router.post("/postNews",requiredLogin, require("./postNews"));

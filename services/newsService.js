@@ -53,6 +53,11 @@ const getNewsById = async id => {
   return await News.findById(id);
 };
 
+const checkNewsStatus = async id => {
+  const news= await News.findById(id)
+  return news.status;
+};
+
 const insertNews = async newsData => {
   const news = new News(newsData);
   return await news.save();
@@ -104,6 +109,7 @@ module.exports = {
   deleteNewsById,
   editNews,
   getNewsByAdmin,
-  getNewsOfAccount
+  getNewsOfAccount,
+  checkNewsStatus
 
 };
