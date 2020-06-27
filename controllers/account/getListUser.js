@@ -15,7 +15,6 @@ const get = async (req, res) => {
       
       let user = await getUserInfoById(arr[i]._id)
       arr[i] = {...arr[i]._doc, user}
-      console.log(user)
     }
 
     // const result1= await getUserInfo();

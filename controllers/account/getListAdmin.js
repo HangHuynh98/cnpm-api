@@ -14,7 +14,6 @@ const get = async (req, res) => {
     for(let i = 0; i< arr.length; i++){
       let user = await getUserInfoById(arr[i]._id)
       arr[i] = {...arr[i]._doc, user}
-      console.log(user)
     }
     res.send(arr);
    
