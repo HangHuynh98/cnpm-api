@@ -10,22 +10,25 @@ const block = async (req, res) => {
   const idDecoded = req.decoded.id; 
   if (!id) return BadRequest(res, "Invalid params"); 
   try {
-    if(id === idDecoded)  res.status(405).json({msg: 'Method not Allow'})
-    const account = await ManageAccountById(id, status);
-    if(!account) return NotFound(res, id + " is not found");
-    let result = {
-      status: account.status,
-      isAdmin: account.isAdmin,
-      role: [
-        ...account.role
-      ],
-      _id: account._id,
-      email: account.email,
-      name: account.name,
-      createdDay:account.createdDay,
+    if(id === idDecoded){res.status(405).json({msg: 'Method not Allow'})
+  }
+    else{
+      const account = await ManageAccountById(id, status);
+      if(!account) return NotFound(res, id + " is not found");
+      let result = {
+        status: account.status,
+        isAdmin: account.isAdmin,
+        role: [
+          ...account.role
+        ],
+        _id: account._id,
+        email: account.email,
+        name: account.name,
+        createdDay:account.createdDay,
+      }
+      res.send(result);
     }
    
-    res.send(result);
   } catch (e) {
     console.log(e);
     InternalServerError(res);

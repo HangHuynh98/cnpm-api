@@ -16,21 +16,21 @@ const changed = async (req, res) => {
     }
   }
   try {
-   if(idAccount === idDecoded)  res.status(405).json({msg: 'Method not Allow'})
-    const account = await changeRoleByIdAccount(idAccount, nAccInfo);
-    if (!account) return NotFound(res, idAccount + " is not found");
-    let result = {
-      status: account.status,
-      isAdmin: account.isAdmin,
-      role: [
-        ...account.role
-      ],
-      _id: account._id,
-      email: account.email,
-      name: account.name,
-      createdDay:account.createdDay,
-    }
-    res.send(result);
+   if(idAccount === idDecoded) {res.status(405).json({msg: 'Method not Allow'})} 
+    else{const account = await changeRoleByIdAccount(idAccount, nAccInfo);
+      if (!account) return NotFound(res, idAccount + " is not found");
+      let result = {
+        status: account.status,
+        isAdmin: account.isAdmin,
+        role: [
+          ...account.role
+        ],
+        _id: account._id,
+        email: account.email,
+        name: account.name,
+        createdDay:account.createdDay,
+      }
+      res.send(result);} 
   } catch (error) {
     console.log(error)
     if ((error.name === "CastError" || error.name === "SyntaxError")) return BadRequest(res, "Invalid data");

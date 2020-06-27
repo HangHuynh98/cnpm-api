@@ -23,7 +23,9 @@ const getAccountByID = async id => {
 const getUserRoleById = async id => {
   return await Account.findById(id).select('isAdmin');
 };
-
+const deleteAccountById = async id => {
+  return await Account.findByIdAndDelete(id);
+};
 const changePassword = async (id, newPass) => {
   return await Account.findByIdAndUpdate(id, { hash_password: newPass });
 };
@@ -31,8 +33,6 @@ const changePassword = async (id, newPass) => {
 const ManageAccountById = async (id, status) => {
   return await Account.findByIdAndUpdate(id, { status }, { new: true });
 };
-
-
 const getAccountUsers = async () => {
     arr=await Account.find({isAdmin:false},{"status":1,"isAdmin":1,"role":1,"email":1, "name":1, "createdDay":1}).sort({createdDay: -1 }) ;
     return arr
@@ -53,11 +53,7 @@ const updateAccountByIdAccount = async (id, name) => {
     new: true
   }); 
 }; 
-// const blockAccountById = async (id, AccountData) => {
-//   return await Account.findOneAndUpdate({ _id: id }, AccountData, {
-//     new: true
-//   });
-// };
+
 
 
 
@@ -70,6 +66,7 @@ module.exports = {
   getAccountById,
   getAccountByID,
   getAccountUsers,
+  deleteAccountById,
   getAccountAdmins,
   changePassword,
   changeRoleByIdAccount,
